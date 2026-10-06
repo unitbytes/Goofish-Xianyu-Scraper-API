@@ -78,7 +78,7 @@ However, extracting data from Goofish is notoriously difficult:
       <span style="color:#64748B;font-size:11px">SKU matrices & FBA specs</span>
     </td>
     <td style="padding:10px 12px;border:1px solid #E2E8F0;background:#FAFAFA;vertical-align:top;width:20%">
-      <span style="white-space:nowrap">📕 <b><a href="https://apify.com/unitbytes/xiaohongshu-scraper?fpr=939u3w&fp_sid=ecosystem" style="color:#0F172A;text-decoration:none;font-size:13px">Xiaohongshu Trends</a></b></span><br><span style="color:#2563EB;font-size:11px;font-weight:600">Social Commerce & KOL</span><br>
+      <span style="white-space:nowrap">📕 <b><a href="https://apify.com/unitbytes/xiaohongshu-rednote-trend-scraper?fpr=939u3w&fp_sid=ecosystem" style="color:#0F172A;text-decoration:none;font-size:13px">Xiaohongshu Trends</a></b></span><br><span style="color:#2563EB;font-size:11px;font-weight:600">Social Commerce & KOL</span><br>
       <span style="color:#64748B;font-size:11px">Viral Posts & Buyer Intent</span>
     </td>
     <td style="padding:10px 12px;border:1px solid #E2E8F0;background:#FFF4ED;vertical-align:top;width:20%">
