@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## ⚡ Goofish (闲鱼) All-in-One: Search, Sellers & Reviews — Automated n8n Pipeline\n**Powered by [UnitBytes on Apify](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** ($0.008 / item)\n\n### ⚙️ How It Works\nThis workflow runs on a schedule, calls the **[goofish-scraper Apify Actor](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** via its synchronous REST endpoint, normalizes the extracted fields (`rowStatus, recordType, sellerId, sellerName, sellerCreditRating`), and exports a clean CSV file.\n\n### 🚀 30-Second Setup Instructions\n1. **Get your free Apify API Token**: Open [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) and copy your API token from **Settings → Integrations**.\n2. **Paste your token & search parameters**: Double-click the **\"1. Set Apify Token & Input\"** node and replace `YOUR_APIFY_API_TOKEN` with your token.\n3. **Click \"Test Workflow\"**: The HTTP Request node calls the synchronous UnitBytes Apify endpoint, normalizes the extracted records, and exports a clean CSV file ready for Google Sheets, Airtable, Slack, or OpenAI.\n\n📖 **Documentation & Schema Reference**: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
+        "content": "## ⚡ Goofish (闲鱼) All-in-One: Search, Sellers & Reviews — Automated n8n Pipeline\n**Powered by [UnitBytes on Apify](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** ($0.008 / item)\n\n### ⚙️ How It Works\nThis workflow runs on a schedule, calls the **[goofish-scraper Apify Actor](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** via its synchronous REST endpoint, normalizes the extracted fields (`rowStatus, recordType, id, sellerId, sellerNick`), and exports a clean CSV file.\n\n### 🚀 30-Second Setup Instructions\n1. **Get your free Apify API Token**: Open [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) and copy your API token from **Settings → Integrations**.\n2. **Paste your token & search parameters**: Double-click the **\"1. Set Apify Token & Input\"** node and replace `YOUR_APIFY_API_TOKEN` with your token.\n3. **Click \"Test Workflow\"**: The HTTP Request node calls the synchronous UnitBytes Apify endpoint, normalizes the extracted records, and exports a clean CSV file ready for Google Sheets, Airtable, Slack, or OpenAI.\n\n📖 **Documentation & Schema Reference**: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
         "height": 380,
         "width": 520,
         "color": 4
@@ -19,7 +19,7 @@
     },
     {
       "parameters": {
-        "content": "### 📊 Connect Your Destination\nThe **\"3. Normalize Output Fields\"** node outputs flat records (`rowStatus, recordType, sellerId, sellerName, sellerCreditRating`).\n\n- **Google Sheets / Airtable**: Connect a Google Sheets (`Append or Update Row`) node after Step 3.\n- **Slack / Telegram / Email Alerts**: Connect a Filter node + Slack node to alert your team on new deals or reviews.\n- **AI Agent / OpenAI**: Connect an OpenAI / LLM Chain node to summarize or classify extracted items.",
+        "content": "### 📊 Connect Your Destination\nThe **\"3. Normalize Output Fields\"** node outputs flat records (`rowStatus, recordType, id, sellerId, sellerNick`).\n\n- **Google Sheets / Airtable**: Connect a Google Sheets (`Append or Update Row`) node after Step 3.\n- **Slack / Telegram / Email Alerts**: Connect a Filter node + Slack node to alert your team on new deals or reviews.\n- **AI Agent / OpenAI**: Connect an OpenAI / LLM Chain node to summarize or classify extracted items.",
         "height": 220,
         "width": 420,
         "color": 5
@@ -128,27 +128,27 @@
               "type": "string"
             },
             {
-              "id": "e282d9fa-1f3d-5708-b92c-c573f87e72f4",
+              "id": "fee75271-a7d4-573d-9feb-04679a631dbe",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "58a48f4b-9301-59ad-8c5a-d5cbc8a87cb6",
               "name": "sellerId",
               "value": "={{ $json.sellerId }}",
               "type": "string"
             },
             {
-              "id": "a291d97e-96d7-50e3-9eb4-db3cebb08274",
-              "name": "sellerName",
-              "value": "={{ $json.sellerName }}",
+              "id": "ff632dc6-79e2-52f5-af4a-cd198a884fa1",
+              "name": "sellerNick",
+              "value": "={{ $json.sellerNick }}",
               "type": "string"
             },
             {
-              "id": "f92d22c8-2b01-5977-9955-e6410ee0c370",
-              "name": "sellerCreditRating",
-              "value": "={{ $json.sellerCreditRating }}",
-              "type": "string"
-            },
-            {
-              "id": "63ff4147-0a3c-5f30-886d-befe2e9950f8",
-              "name": "sellerLocation",
-              "value": "={{ $json.sellerLocation }}",
+              "id": "3209760e-d828-597b-a447-b0e19dbb9b85",
+              "name": "sellerCredit",
+              "value": "={{ $json.sellerCredit }}",
               "type": "string"
             }
           ]

@@ -30,4 +30,4 @@ run_input = {
 run = client.actor("unitbytes/goofish-scraper").call(run_input=run_input)
 
 for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-    print(item.get("title"), item.get("sellerName"), item.get("price"))
+    print(item.get("title"), item.get("price"), item.get("originalPrice"))

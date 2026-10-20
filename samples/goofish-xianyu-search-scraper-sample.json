@@ -5,7 +5,10 @@
     "price": 1340,
     "currency": "CNY",
     "url": "https://www.goofish.com/item?id=1082638287441",
-    "pictureUrl": "http://img.alicdn.com/bao/uploaded/i2/2212259311853/O1CN01Dd3gwqAchoG3thAe_!!4611686018427384045-0-xy_item.jpg",
+    "pictureUrl": "https://img.alicdn.com/bao/uploaded/i2/2212259311853/O1CN01Dd3gwqAchoG3thAe_!!4611686018427384045-0-xy_item.jpg",
+    "imageUrls": [
+      "https://img.alicdn.com/bao/uploaded/i2/2212259311853/O1CN01Dd3gwqAchoG3thAe_!!4611686018427384045-0-xy_item.jpg"
+    ],
     "city": "九江",
     "freeShipping": true,
     "tags": [
@@ -14,8 +17,8 @@
       "freeShippingIcon"
     ],
     "postedAt": "2026-09-16T14:34:20+00:00",
-    "description": "Switch OLED 喷射战士3限定港版\n原装配件齐全，箱说全，五码合一，机身有轻微使用痕迹，按键灵敏，屏幕已贴钢化膜，功能一切正常。\n外加一张64G内存卡和港版原装电源转换插头。\n支持顺丰包邮，支持验货宝验机！",
-    "status": "online",
+    "description": "Switch OLED 喷射战士3限定港版\n原装配件齐全，箱说全，五码合一，机身有轻微使用痕迹，按键灵敏，屏幕已贴钢化膜，功能一切正常。\n支持顺丰包邮，支持验货宝验机！",
+    "status": "onsale",
     "condition": "轻微划痕磨损",
     "specs": {
       "品牌": "Nintendo/任天堂",
@@ -32,16 +35,14 @@
       "city": "九江",
       "lastActive": "6小时前来过",
       "averageReplyTime": "2小时",
-      "registeredDays": 1811,
+      "registrationDays": 1811,
       "zhimaAuth": true,
-      "zhimaCredit": "信用极好",
+      "zhimaCredit": "卖家信用极好",
       "totalSold": 9,
-      "totalListed": 8,
       "goodReviewRate": "100%",
       "replyRate24h": "66%"
     },
     "tradeGuarantee": true,
-    "reportUrl": "https://h5.m.goofish.com/wow/moyu/cro-report-center/...",
     "stats": {
       "views": 41,
       "wants": 12,
