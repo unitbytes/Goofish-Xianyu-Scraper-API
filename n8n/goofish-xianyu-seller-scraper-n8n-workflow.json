@@ -1,0 +1,253 @@
+{
+  "name": "Goofish (闲鱼) All-in-One: Search, Sellers & Reviews — Automated Extraction to CSV & Sheets (UnitBytes)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## ⚡ Goofish (闲鱼) All-in-One: Search, Sellers & Reviews — Automated n8n Pipeline\n**Powered by [UnitBytes on Apify](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** ($0.008 / item)\n\n### ⚙️ How It Works\nThis workflow runs on a schedule, calls the **[goofish-scraper Apify Actor](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** via its synchronous REST endpoint, normalizes the extracted fields (`rowStatus, recordType, sellerId, sellerName, sellerCreditRating`), and exports a clean CSV file.\n\n### 🚀 30-Second Setup Instructions\n1. **Get your free Apify API Token**: Open [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) and copy your API token from **Settings → Integrations**.\n2. **Paste your token & search parameters**: Double-click the **\"1. Set Apify Token & Input\"** node and replace `YOUR_APIFY_API_TOKEN` with your token.\n3. **Click \"Test Workflow\"**: The HTTP Request node calls the synchronous UnitBytes Apify endpoint, normalizes the extracted records, and exports a clean CSV file ready for Google Sheets, Airtable, Slack, or OpenAI.\n\n📖 **Documentation & Schema Reference**: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
+        "height": 380,
+        "width": 520,
+        "color": 4
+      },
+      "id": "8f2e7c46-cd48-539c-aa23-63c59d7bb5ed",
+      "name": "Sticky Note — Setup Guide",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        180,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 📊 Connect Your Destination\nThe **\"3. Normalize Output Fields\"** node outputs flat records (`rowStatus, recordType, sellerId, sellerName, sellerCreditRating`).\n\n- **Google Sheets / Airtable**: Connect a Google Sheets (`Append or Update Row`) node after Step 3.\n- **Slack / Telegram / Email Alerts**: Connect a Filter node + Slack node to alert your team on new deals or reviews.\n- **AI Agent / OpenAI**: Connect an OpenAI / LLM Chain node to summarize or classify extracted items.",
+        "height": 220,
+        "width": 420,
+        "color": 5
+      },
+      "id": "b8c242cb-c499-5693-b3db-448c4be8770d",
+      "name": "Sticky Note — Destinations",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "f1192ccb-ec0d-5d7e-aaa7-aff369efcfa1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "232bd29a-08aa-5859-92c0-3019dac03dd9",
+              "name": "apifyToken",
+              "value": "YOUR_APIFY_API_TOKEN",
+              "type": "string"
+            },
+            {
+              "id": "bb8a55e7-964f-5310-8df8-cbf7f33ad02d",
+              "name": "actorInput",
+              "value": "{\"mode\": \"search\", \"keyword\": \"iPhone 15\", \"maxItems\": 20, \"sortBy\": \"newest\", \"includeListings\": true, \"includeReviews\": true, \"maxListings\": 20, \"maxReviews\": 30}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b46816c3-bf32-55e2-b40b-b9773da72d86",
+      "name": "1. Set Apify Token & Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.apify.com/v2/acts/unitbytes~goofish-scraper/run-sync-get-dataset-items?token={{ $json.apifyToken }}&format=json&clean=true",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.actorInput) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "0ec22304-12ee-5924-b9ee-ca9b9c237476",
+      "name": "2. Run UnitBytes (goofish-scraper)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "866adbfc-fa37-53ec-9152-1c286bbbbec7",
+              "name": "rowStatus",
+              "value": "={{ $json.rowStatus }}",
+              "type": "string"
+            },
+            {
+              "id": "3f6fdb71-3395-569e-b248-d2b2ed680e46",
+              "name": "recordType",
+              "value": "={{ $json.recordType }}",
+              "type": "string"
+            },
+            {
+              "id": "e282d9fa-1f3d-5708-b92c-c573f87e72f4",
+              "name": "sellerId",
+              "value": "={{ $json.sellerId }}",
+              "type": "string"
+            },
+            {
+              "id": "a291d97e-96d7-50e3-9eb4-db3cebb08274",
+              "name": "sellerName",
+              "value": "={{ $json.sellerName }}",
+              "type": "string"
+            },
+            {
+              "id": "f92d22c8-2b01-5977-9955-e6410ee0c370",
+              "name": "sellerCreditRating",
+              "value": "={{ $json.sellerCreditRating }}",
+              "type": "string"
+            },
+            {
+              "id": "63ff4147-0a3c-5f30-886d-befe2e9950f8",
+              "name": "sellerLocation",
+              "value": "={{ $json.sellerLocation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "99caf6ee-1de7-5f29-8e47-5e6de40da826",
+      "name": "3. Normalize Output Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        940,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "csv",
+        "options": {
+          "fileName": "goofish-xianyu-seller-scraper-dataset-export.csv"
+        }
+      },
+      "id": "3855527c-fce5-5918-98b7-06ab28cb42b1",
+      "name": "4. Export to CSV File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1180,
+        480
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "1. Set Apify Token & Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Set Apify Token & Input": {
+      "main": [
+        [
+          {
+            "node": "2. Run UnitBytes (goofish-scraper)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Run UnitBytes (goofish-scraper)": {
+      "main": [
+        [
+          {
+            "node": "3. Normalize Output Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Normalize Output Fields": {
+      "main": [
+        [
+          {
+            "node": "4. Export to CSV File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "030f9420-0ca8-5240-8fe8-208e287a8b19"
+  },
+  "tags": [
+    {
+      "name": "Web Scraping"
+    },
+    {
+      "name": "Apify"
+    },
+    {
+      "name": "UnitBytes"
+    },
+    {
+      "name": "C2C Marketplaces"
+    }
+  ]
+}
