@@ -3,82 +3,113 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews — AI Co-Pilot & Multi-App Pipeline\n\nExtracts fresh data on a schedule with the **[goofish-scraper Apify Actor](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** ($0.001 / item), skips seen records, logs all rows to **Google Sheets** and **CSV**, and enriches top matches with **OpenAI (`gpt-4o-mini`)** for **Slack** and **Telegram**.\n\n### How it works\n1. **Every 6 Hours** loads rules from **1. Configure Search & Rules**.\n2. **2. Run UnitBytes (goofish-scraper)** fetches data and **3. Skip Seen Records** deduplicates by `id`.\n3. **4. Clean & Score Items** and **5. Map Export Fields** normalize `id, sellerId, sellerNick, sellerCredit` and compute `priorityScore`.\n4. **6a. Log to Google Sheets** and **6b. Export Backup CSV** save all rows, while **6c. Filter High-Priority Items** routes top matches to **7. AI Sourcing & Arbitrage Analyst**.\n5. **8. Merge AI Arbitrage Brief** merges AI fields and triggers **9a. Send Slack Deal & Arbitrage Alert** and **9b. Send Telegram Instant Deal Alert**.\n\n### Setup\n1. Add your token from [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) to the **HTTP Header Auth** credential on node 2 (`Name`: `Authorization`, `Value`: `Bearer <YOUR_APIFY_TOKEN>`).\n2. Edit `actorInput`, `sheetTab`, and `maxTargetPrice` in node 1.\n3. Connect **OpenAI**, **Google Sheets**, **Slack**, and **Telegram** credentials.\n\n### Customization\n- Adjust `maxTargetPrice` in node 1 or the prompt in node 7.\n- Docs: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
-        "height": 780,
-        "width": 560,
-        "color": 1
+        "content": "## Analyze Goofish (Xianyu) seller inventory with OpenAI to Slack, Telegram, and Google Sheets\n\n### How it works\n\nThis workflow runs every six hours to extract fresh records through the **[goofish-scraper](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** UnitBytes Apify actor ($0.001 / item), remove previously seen items by `id`, and normalize and score the dataset (`id, title, price, originalPrice`). It maps the cleaned fields for export, logs all rows to **Google Sheets**, creates a backup **CSV** file, and sends only high-priority records into **OpenAI (`gpt-4o-mini`)** for structured analysis and action drafting. The enriched fields are then merged and delivered to **Slack** and **Telegram**.\n\n### Setup steps\n\n- Configure the schedule interval in **When Every 6 Hours** if six hours is not ideal for your cadence.\n- Add your Apify API token from [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) (`Authorization: Bearer <YOUR_APIFY_TOKEN>`) in **Post to Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews API** and confirm `actorInput` in **Set Search Parameters**.\n- Connect **Google Sheets** credentials in **Append Data to Sheets** and select your destination spreadsheet.\n- Configure **OpenAI** credentials in **AI Sourcing and Arbitrage Analyst** and review the `gpt-4o-mini` system prompt.\n- Connect **Slack** and **Telegram** credentials on the final delivery nodes.\n- Review `maxTargetPrice` and `priorityKeyword` in **Set Search Parameters** before activating.\n\n### Customization\n\nAdjust `actorInput`, `maxTargetPrice`, `priorityKeyword`, the OpenAI prompt, Slack message formatting, and Telegram template fields to match your workflow. Full schema and input docs: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
+        "width": 480,
+        "height": 896
       },
       "id": "3a51efe4-d617-5d1b-a1e0-13fc1a77b108",
-      "name": "Overview",
+      "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -640,
-        -80
+        -560,
+        -288
       ]
     },
     {
       "parameters": {
-        "content": "## 1. Schedule & Search Settings\nTriggers on schedule and sets target search parameters, Google Sheets tab, and alert thresholds.",
-        "height": 380,
-        "width": 440,
+        "content": "## Schedule search rules\n\nStarts the workflow on a six-hour schedule and defines the search input, destination sheet tab, scoring threshold, and priority keyword rules used downstream.",
+        "width": 416,
+        "height": 336,
         "color": 7
       },
       "id": "63103708-f900-5a9f-bad1-43f67c9a722f",
-      "name": "Section 1 — Schedule & Settings",
+      "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        60
+        48
       ]
     },
     {
       "parameters": {
-        "content": "## 2. Extract & Deduplicate\nRuns the UnitBytes Apify Actor and skips records already processed in previous runs.",
-        "height": 380,
-        "width": 440,
+        "content": "## Scrape and deduplicate\n\nRuns the UnitBytes Apify actor through a synchronous HTTP request and removes records that have already been processed in previous executions.",
+        "width": 416,
+        "height": 320,
         "color": 7
       },
       "id": "87739940-a986-5cd4-a5ae-6560b0fa5804",
-      "name": "Section 2 — Extract & Deduplicate",
+      "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        460,
-        60
+        448,
+        64
       ]
     },
     {
       "parameters": {
-        "content": "## 3. Clean, Score & Flatten\nNormalizes fields, parses numeric metrics, and calculates a 0–100 priority score.",
-        "height": 380,
-        "width": 440,
+        "content": "## Clean and map items\n\nNormalizes raw scraper fields, parses numeric metrics, calculates 0–100 priority scores, and maps the cleaned data into export-ready fields.",
+        "width": 416,
+        "height": 336,
         "color": 7
       },
       "id": "254da392-6688-55c5-b17c-500d70db49d4",
-      "name": "Section 3 — Clean, Score & Flatten",
+      "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        920,
-        60
+        912,
+        48
       ]
     },
     {
       "parameters": {
-        "content": "## 4. Sheets, CSV & AI Co-Pilot\nLogs all rows to Sheets and CSV, enriches high-priority items with OpenAI, and alerts teams.",
-        "height": 740,
-        "width": 980,
+        "content": "## Export and prioritize\n\nBranches the mapped data into persistent outputs by logging to Google Sheets and creating a backup CSV, while filtering the stream down to high-priority items for AI enrichment.",
+        "width": 240,
+        "height": 816,
         "color": 7
       },
       "id": "f203d08f-85be-500a-850c-aa424fe105e0",
-      "name": "Section 4 — Sheets, CSV & AI Co-Pilot",
+      "name": "Sticky Note4",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1380,
-        -80
+        1392,
+        -288
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Enrich with OpenAI\n\nUses OpenAI (`gpt-4o-mini`) to analyze high-priority records and merges the AI-generated headline, verdict, analysis, and draft with the original item fields.",
+        "width": 416,
+        "height": 336,
+        "color": 7
+      },
+      "id": "bfbca47c-07a9-5870-8ee5-db2fdb62327b",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Notify and route actions\n\nDelivers the enriched high-priority insights by posting formatted alerts to Slack and creating ready-to-send outreach drafts or instant alerts.",
+        "width": 240,
+        "height": 640,
+        "color": 7
+      },
+      "id": "02c67ff5-58d2-59f9-bbd9-c4aa6b620fbd",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        0
       ]
     },
     {
@@ -93,7 +124,7 @@
         }
       },
       "id": "f1192ccb-ec0d-5d7e-aaa7-aff369efcfa1",
-      "name": "Every 6 Hours",
+      "name": "When Every 6 Hours",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
@@ -120,7 +151,7 @@
             {
               "id": "420910d6-1777-5800-963e-6574f1f41cac",
               "name": "maxTargetPrice",
-              "value": 500,
+              "value": 5000,
               "type": "number"
             },
             {
@@ -128,13 +159,19 @@
               "name": "priorityKeyword",
               "value": "",
               "type": "string"
+            },
+            {
+              "id": "a7f33103-4bc0-5847-bcf5-ac755ba6c96d",
+              "name": "telegramChatId",
+              "value": "@your_telegram_channel",
+              "type": "string"
             }
           ]
         },
         "options": {}
       },
       "id": "b46816c3-bf32-55e2-b40b-b9773da72d86",
-      "name": "1. Configure Search & Rules",
+      "name": "Set Search Parameters",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
@@ -171,7 +208,7 @@
         }
       },
       "id": "0ec22304-12ee-5924-b9ee-ca9b9c237476",
-      "name": "2. Run UnitBytes (goofish-scraper)",
+      "name": "Post to Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews API",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -186,7 +223,7 @@
         "options": {}
       },
       "id": "d0e44213-99c3-5ee0-9dee-a49428c9ded0",
-      "name": "3. Skip Seen Records",
+      "name": "Deduplicate All Fields",
       "type": "n8n-nodes-base.removeDuplicates",
       "typeVersion": 2,
       "position": [
@@ -196,10 +233,10 @@
     },
     {
       "parameters": {
-        "jsCode": "// Normalize fields, parse numeric metrics, and score items for AI enrichment\nconst config = $('1. Configure Search & Rules').first().json;\nconst threshold = Number(config.maxTargetPrice !== undefined ? config.maxTargetPrice : 500);\nconst keywordFilter = String(config.priorityKeyword || '').trim().toLowerCase();\nconst primaryKeys = [\"id\", \"sellerId\", \"sellerNick\", \"sellerCredit\", \"city\", \"title\"];\n\nreturn $input.all().map((item) => {\n  const raw = item.json || {};\n  const cleaned = { ...raw };\n\n  for (const k of primaryKeys) {\n    if (typeof cleaned[k] === 'string') {\n      cleaned[k] = cleaned[k].replace(/\\s+/g, ' ').trim();\n    }\n  }\n\n  const recordId = String(cleaned.id || cleaned.url || '');\n  const titleText = String(cleaned.title || recordId).slice(0, 180);\n  const itemUrl = String(cleaned.url || '');\n  const rawMetric = cleaned.price || cleaned.promotionPrice || cleaned.priceMin || 0;\n  const numericValue = Number(String(rawMetric).replace(/[^0-9.-]/g, '')) || 0;\n\n  let priorityScore = 50;\n  let isHighPriority = false;\n\n  if (numericValue > 0 && numericValue <= threshold) {\n    priorityScore = Math.min(100, Math.round(70 + ((threshold - numericValue) / Math.max(threshold, 1)) * 30));\n    isHighPriority = true;\n  }\n\n  if (keywordFilter && titleText.toLowerCase().includes(keywordFilter)) {\n    priorityScore = Math.min(100, priorityScore + 20);\n    isHighPriority = true;\n  }\n\n  return {\n    json: {\n      ...cleaned,\n      recordId,\n      titleText,\n      itemUrl,\n      numericValue,\n      priorityScore,\n      isHighPriority,\n      alertSummary: titleText + ' (Metric: ' + numericValue + ' | Score: ' + priorityScore + '/100)',\n      scrapedAt: new Date().toISOString(),\n    },\n  };\n});"
+        "jsCode": "// Normalize fields, parse numeric metrics, and score items for AI enrichment\nconst config = $('Set Search Parameters').first().json;\nconst threshold = Number(config.maxTargetPrice !== undefined ? config.maxTargetPrice : 5000);\nconst keywordFilter = String(config.priorityKeyword || '').trim().toLowerCase();\nconst primaryKeys = [\"id\", \"title\", \"price\", \"originalPrice\", \"sellerNick\", \"sellerCredit\", \"city\", \"freeShipping\", \"url\"];\n\nreturn $input.all().map((item) => {\n  const raw = item.json || {};\n  const cleaned = { ...raw };\n\n  for (const k of primaryKeys) {\n    if (typeof cleaned[k] === 'string') {\n      cleaned[k] = cleaned[k].replace(/\\s+/g, ' ').trim();\n    }\n  }\n\n  const recordId = String(cleaned.id || cleaned.url || '');\n  const titleText = String(cleaned.title || recordId).slice(0, 180);\n  const itemUrl = String(cleaned.url || '');\n  const rawMetric = cleaned.price || cleaned.promotionPrice || cleaned.priceMin || 0;\n  const numericValue = Number(String(rawMetric).replace(/[^0-9.-]/g, '')) || 0;\n\n  let priorityScore = 50;\n  let isHighPriority = false;\n\n  if (numericValue > 0 && numericValue <= threshold) {\n    priorityScore = Math.min(100, Math.round(70 + ((threshold - numericValue) / Math.max(threshold, 1)) * 30));\n    isHighPriority = true;\n  }\n\n  if (keywordFilter && titleText.toLowerCase().includes(keywordFilter)) {\n    priorityScore = Math.min(100, priorityScore + 20);\n    isHighPriority = true;\n  }\n\n  return {\n    json: {\n      ...cleaned,\n      recordId,\n      titleText,\n      itemUrl,\n      numericValue,\n      priorityScore,\n      isHighPriority,\n      alertSummary: titleText + ' (Metric: ' + numericValue + ' | Score: ' + priorityScore + '/100)',\n      scrapedAt: new Date().toISOString(),\n    },\n  };\n});"
       },
       "id": "c69b4cc0-7d8f-52cf-b053-125e47f66832",
-      "name": "4. Clean & Score Items",
+      "name": "Normalize and Score Items",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -218,61 +255,79 @@
               "type": "string"
             },
             {
-              "id": "da55f6f1-7e27-5841-996b-e4377f02482d",
-              "name": "sellerId",
-              "value": "={{ $json.sellerId !== undefined && $json.sellerId !== null ? $json.sellerId : '' }}",
-              "type": "string"
-            },
-            {
-              "id": "64240b5e-3eb0-5c27-811f-cca0e0635d92",
-              "name": "sellerNick",
-              "value": "={{ $json.sellerNick !== undefined && $json.sellerNick !== null ? $json.sellerNick : '' }}",
-              "type": "string"
-            },
-            {
-              "id": "6aa4be24-87fa-51ec-a934-1238a8dabeb5",
-              "name": "sellerCredit",
-              "value": "={{ $json.sellerCredit !== undefined && $json.sellerCredit !== null ? $json.sellerCredit : '' }}",
-              "type": "string"
-            },
-            {
-              "id": "5c2d112d-2fcc-5183-a0e7-f73b19d08df2",
-              "name": "city",
-              "value": "={{ $json.city !== undefined && $json.city !== null ? $json.city : '' }}",
-              "type": "string"
-            },
-            {
-              "id": "bf71b11d-528f-58cb-a40c-aa6e29fc9449",
+              "id": "9fdc49e7-3ec9-55c1-bf9d-ad2e9592d15b",
               "name": "title",
               "value": "={{ $json.title !== undefined && $json.title !== null ? $json.title : '' }}",
               "type": "string"
             },
             {
-              "id": "c30fefbd-fc12-521a-bd58-893b089be13c",
+              "id": "21922abe-3be7-5a8b-9c82-30d1d3b1ca3f",
+              "name": "price",
+              "value": "={{ $json.price !== undefined && $json.price !== null ? $json.price : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "53904a26-6573-57c6-a42a-558adb7a6d38",
+              "name": "originalPrice",
+              "value": "={{ $json.originalPrice !== undefined && $json.originalPrice !== null ? $json.originalPrice : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "ff632dc6-79e2-52f5-af4a-cd198a884fa1",
+              "name": "sellerNick",
+              "value": "={{ $json.sellerNick !== undefined && $json.sellerNick !== null ? $json.sellerNick : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "3209760e-d828-597b-a447-b0e19dbb9b85",
+              "name": "sellerCredit",
+              "value": "={{ $json.sellerCredit !== undefined && $json.sellerCredit !== null ? $json.sellerCredit : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "fc311a4b-62a6-5c12-9c3d-ab4ab7383057",
+              "name": "city",
+              "value": "={{ $json.city !== undefined && $json.city !== null ? $json.city : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "1632bfff-7298-5bb7-ae9a-82fd8c1dde9c",
+              "name": "freeShipping",
+              "value": "={{ $json.freeShipping !== undefined && $json.freeShipping !== null ? $json.freeShipping : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "470742a3-d832-50fb-9afb-5995b4e83cb0",
+              "name": "url",
+              "value": "={{ $json.url !== undefined && $json.url !== null ? $json.url : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "50bd383e-7ac0-5d2a-a2a8-0f1cfa6388e9",
               "name": "numericValue",
               "value": "={{ Number($json.numericValue || 0) }}",
               "type": "number"
             },
             {
-              "id": "aa356018-0f89-5de7-9bf8-e7ea1527adff",
+              "id": "83765fcf-e91c-5e7d-a7f1-c0bed02364a1",
               "name": "priorityScore",
               "value": "={{ Number($json.priorityScore || 0) }}",
               "type": "number"
             },
             {
-              "id": "91645a2e-8fab-558a-9c63-d08d95ecbf5c",
+              "id": "d77faf62-b274-52bd-a03a-3f925146ef39",
               "name": "isHighPriority",
               "value": "={{ Boolean($json.isHighPriority) }}",
               "type": "boolean"
             },
             {
-              "id": "9dd6b850-4201-5e74-9c0c-05b35531b9b1",
+              "id": "7032d3f7-1bd1-5fac-abb3-779cdaa8bd3c",
               "name": "alertSummary",
               "value": "={{ $json.alertSummary !== undefined && $json.alertSummary !== null ? $json.alertSummary : '' }}",
               "type": "string"
             },
             {
-              "id": "6d885e3e-ba9f-5f5f-b11d-dadb35974833",
+              "id": "cdfb1647-208e-56d3-9ec0-6aa76797ce0d",
               "name": "scrapedAt",
               "value": "={{ $json.scrapedAt !== undefined && $json.scrapedAt !== null ? $json.scrapedAt : '' }}",
               "type": "string"
@@ -283,7 +338,7 @@
         "options": {}
       },
       "id": "99caf6ee-1de7-5f29-8e47-5e6de40da826",
-      "name": "5. Map Export Fields",
+      "name": "Prepare Export Fields",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
@@ -303,17 +358,20 @@
         "sheetName": {
           "__rl": true,
           "mode": "name",
-          "value": "={{ $('1. Configure Search & Rules').first().json.sheetTab }}"
+          "value": "={{ $('Set Search Parameters').first().json.sheetTab }}"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
             "id": "={{ $json.id !== undefined && $json.id !== null ? $json.id : '' }}",
-            "sellerId": "={{ $json.sellerId !== undefined && $json.sellerId !== null ? $json.sellerId : '' }}",
+            "title": "={{ $json.title !== undefined && $json.title !== null ? $json.title : '' }}",
+            "price": "={{ $json.price !== undefined && $json.price !== null ? $json.price : '' }}",
+            "originalPrice": "={{ $json.originalPrice !== undefined && $json.originalPrice !== null ? $json.originalPrice : '' }}",
             "sellerNick": "={{ $json.sellerNick !== undefined && $json.sellerNick !== null ? $json.sellerNick : '' }}",
             "sellerCredit": "={{ $json.sellerCredit !== undefined && $json.sellerCredit !== null ? $json.sellerCredit : '' }}",
             "city": "={{ $json.city !== undefined && $json.city !== null ? $json.city : '' }}",
-            "title": "={{ $json.title !== undefined && $json.title !== null ? $json.title : '' }}",
+            "freeShipping": "={{ $json.freeShipping !== undefined && $json.freeShipping !== null ? $json.freeShipping : '' }}",
+            "url": "={{ $json.url !== undefined && $json.url !== null ? $json.url : '' }}",
             "numericValue": "={{ $json.numericValue !== undefined && $json.numericValue !== null ? $json.numericValue : '' }}",
             "priorityScore": "={{ $json.priorityScore !== undefined && $json.priorityScore !== null ? $json.priorityScore : '' }}",
             "isHighPriority": "={{ $json.isHighPriority !== undefined && $json.isHighPriority !== null ? $json.isHighPriority : '' }}",
@@ -332,8 +390,26 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "sellerId",
-              "displayName": "sellerId",
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "price",
+              "displayName": "price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "originalPrice",
+              "displayName": "originalPrice",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -368,8 +444,17 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "title",
-              "displayName": "title",
+              "id": "freeShipping",
+              "displayName": "freeShipping",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -434,7 +519,7 @@
         }
       },
       "id": "0ef5771a-13e5-5287-855a-7ce60de3f3bb",
-      "name": "6a. Log to Google Sheets",
+      "name": "Append Data to Sheets",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
@@ -450,7 +535,7 @@
         }
       },
       "id": "3855527c-fce5-5918-98b7-06ab28cb42b1",
-      "name": "6b. Export Backup CSV",
+      "name": "Export to CSV File",
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
@@ -484,7 +569,7 @@
         "options": {}
       },
       "id": "82a2e88a-b095-5297-b7c6-e606024e858b",
-      "name": "6c. Filter High-Priority Items",
+      "name": "Filter High-Priority Deals",
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
@@ -505,11 +590,11 @@
         "messages": {
           "values": [
             {
-              "content": "You are a cross-border e-commerce sourcing and recommerce arbitrage analyst. Analyze the scraped marketplace listing (translate non-English/Chinese titles to English) and return a JSON object with exactly 4 keys: \"aiHeadline\" (clean English product title and key specs), \"aiVerdict\" (one of: STRONG_ARBITRAGE_BUY, VERIFIED_SUPPLIER_DEAL, REVIEW_CONDITION, PASS), \"aiAnalysis\" (1-sentence evaluation of price vs target threshold, seller trust signals, and estimated resale margin), and \"aiDraftBody\" (a ready-to-send supplier/seller inquiry or negotiation message).",
+              "content": "You are a cross-border e-commerce sourcing and recommerce arbitrage analyst. Analyze the scraped marketplace listing (translate non-English/Chinese titles, condition, and specs to English) and return a JSON object with exactly 4 keys: \"aiHeadline\" (clean English product title, condition, and price summary), \"aiVerdict\" (one of: STRONG_ARBITRAGE_BUY, VERIFIED_SUPPLIER_DEAL, REVIEW_CONDITION, PASS), \"aiAnalysis\" (1-sentence evaluation of price vs target threshold, item condition, seller credit/trade guarantee signals, and estimated resale margin), and \"aiDraftBody\" (a ready-to-send buyer/supplier inquiry message in the seller's language with an English translation).",
               "role": "system"
             },
             {
-              "content": "=Marketplace Listing ({{ $json.recordId }}):\nListing Title: {{ $json.titleText }}\nParsed Price / Metric: {{ $json.numericValue }} (Priority Score: {{ $json.priorityScore }}/100)\nListing URL: {{ $json.itemUrl }}\nRaw Payload Summary: {{ JSON.stringify($json).slice(0, 1200) }}",
+              "content": "=Marketplace Listing ({{ $json.recordId }}):\nListing Title: {{ $json.titleText }}\nParsed Price / Metric: {{ $json.numericValue }} {{ $json.currency || '' }} (Priority Score: {{ $json.priorityScore }}/100)\nCondition / Seller Credit: {{ $json.condition || $json.sellerCredit || 'N/A' }} | City: {{ $json.city || 'N/A' }}\nListing URL: {{ $json.itemUrl }}\nRaw Payload Summary: {{ JSON.stringify($json).slice(0, 1200) }}",
               "role": "user"
             }
           ]
@@ -526,12 +611,12 @@
         }
       },
       "id": "920b89ae-9973-52f2-ae16-796a592be20b",
-      "name": "7. AI Sourcing & Arbitrage Analyst",
+      "name": "AI Sourcing and Arbitrage Analyst",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1660,
-        360
+        1712,
+        368
       ]
     },
     {
@@ -541,43 +626,43 @@
             {
               "id": "f7a0cf07-54ce-50c9-9763-5ae92a0ac136",
               "name": "recordId",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.recordId }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.recordId }}",
               "type": "string"
             },
             {
               "id": "64978942-ab97-5db7-ba98-bdd163e6c950",
               "name": "titleText",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.titleText }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.titleText }}",
               "type": "string"
             },
             {
               "id": "f0d9ecab-5756-53a7-9eb4-033656e7a5ad",
               "name": "itemUrl",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.itemUrl }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.itemUrl }}",
               "type": "string"
             },
             {
               "id": "d791833b-fcd7-53a8-98b4-e1b1e50e5472",
               "name": "numericValue",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.numericValue }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.numericValue }}",
               "type": "number"
             },
             {
               "id": "190f94ea-a569-55a6-8a00-0327d12f5196",
               "name": "priorityScore",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.priorityScore }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.priorityScore }}",
               "type": "number"
             },
             {
               "id": "42c475a6-f3e3-5c81-abe3-16fb3f4bc311",
               "name": "recipientEmail",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.primary_email || '' }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.primary_email || '' }}",
               "type": "string"
             },
             {
               "id": "ce0fe42c-b570-5ee3-af3a-9e482d8de705",
               "name": "aiHeadline",
-              "value": "={{ (typeof ($json.message && $json.message.content) === 'string' ? JSON.parse($json.message.content) : (($json.message && $json.message.content) || $json)).aiHeadline || $('6c. Filter High-Priority Items').item.json.titleText }}",
+              "value": "={{ (typeof ($json.message && $json.message.content) === 'string' ? JSON.parse($json.message.content) : (($json.message && $json.message.content) || $json)).aiHeadline || $('Filter High-Priority Deals').item.json.titleText }}",
               "type": "string"
             },
             {
@@ -601,7 +686,7 @@
             {
               "id": "7c137e43-d0e9-5449-ba4a-65419ac0fb4c",
               "name": "scrapedAt",
-              "value": "={{ $('6c. Filter High-Priority Items').item.json.scrapedAt }}",
+              "value": "={{ $('Filter High-Priority Deals').item.json.scrapedAt }}",
               "type": "string"
             }
           ]
@@ -609,12 +694,12 @@
         "options": {}
       },
       "id": "9ba9896d-f198-53be-98de-03cdbc209784",
-      "name": "8. Merge AI Arbitrage Brief",
+      "name": "Merge Final Arbitrage Fields",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1890,
-        360
+        1936,
+        368
       ]
     },
     {
@@ -641,19 +726,19 @@
         }
       },
       "id": "e3febc67-4cb1-519a-82a0-f6c0e9ecf57d",
-      "name": "9a. Send Slack Deal & Arbitrage Alert",
+      "name": "Post Deal Alert to Slack Channel",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        2120,
-        260
+        2160,
+        256
       ]
     },
     {
       "parameters": {
         "resource": "message",
         "operation": "sendMessage",
-        "chatId": "={{ $('1. Configure Search & Rules').first().json.telegramChatId || '@your_channel' }}",
+        "chatId": "={{ $('Set Search Parameters').first().json.telegramChatId || '@your_channel' }}",
         "text": "=🔥 *AI Arbitrage Brief (Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews)*\n*{{ $json.aiHeadline }}*\n• *AI Verdict:* `{{ $json.aiVerdict }}` (Score: {{ $json.priorityScore }}/100)\n• *Analysis:* {{ $json.aiAnalysis }}\n• *Suggested Message:* {{ $json.aiDraftBody }}\n• *Listing URL:* {{ $json.itemUrl }}",
         "additionalFields": {
           "disable_web_page_preview": true
@@ -666,124 +751,124 @@
         }
       },
       "id": "bcdf7fbd-24de-50b7-aed7-aa0772bd1abf",
-      "name": "9b. Send Telegram Instant Deal Alert",
+      "name": "Send Instant Deal Alert in Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2120,
+        2160,
         480
       ]
     }
   ],
   "connections": {
-    "Every 6 Hours": {
+    "When Every 6 Hours": {
       "main": [
         [
           {
-            "node": "1. Configure Search & Rules",
+            "node": "Set Search Parameters",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "1. Configure Search & Rules": {
+    "Set Search Parameters": {
       "main": [
         [
           {
-            "node": "2. Run UnitBytes (goofish-scraper)",
+            "node": "Post to Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews API",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "2. Run UnitBytes (goofish-scraper)": {
+    "Post to Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews API": {
       "main": [
         [
           {
-            "node": "3. Skip Seen Records",
+            "node": "Deduplicate All Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "3. Skip Seen Records": {
+    "Deduplicate All Fields": {
       "main": [
         [
           {
-            "node": "4. Clean & Score Items",
+            "node": "Normalize and Score Items",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "4. Clean & Score Items": {
+    "Normalize and Score Items": {
       "main": [
         [
           {
-            "node": "5. Map Export Fields",
+            "node": "Prepare Export Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "5. Map Export Fields": {
+    "Prepare Export Fields": {
       "main": [
         [
           {
-            "node": "6a. Log to Google Sheets",
+            "node": "Append Data to Sheets",
             "type": "main",
             "index": 0
           },
           {
-            "node": "6b. Export Backup CSV",
+            "node": "Export to CSV File",
             "type": "main",
             "index": 0
           },
           {
-            "node": "6c. Filter High-Priority Items",
+            "node": "Filter High-Priority Deals",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "6c. Filter High-Priority Items": {
+    "Filter High-Priority Deals": {
       "main": [
         [
           {
-            "node": "7. AI Sourcing & Arbitrage Analyst",
+            "node": "AI Sourcing and Arbitrage Analyst",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "7. AI Sourcing & Arbitrage Analyst": {
+    "AI Sourcing and Arbitrage Analyst": {
       "main": [
         [
           {
-            "node": "8. Merge AI Arbitrage Brief",
+            "node": "Merge Final Arbitrage Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "8. Merge AI Arbitrage Brief": {
+    "Merge Final Arbitrage Fields": {
       "main": [
         [
           {
-            "node": "9a. Send Slack Deal & Arbitrage Alert",
+            "node": "Post Deal Alert to Slack Channel",
             "type": "main",
             "index": 0
           },
           {
-            "node": "9b. Send Telegram Instant Deal Alert",
+            "node": "Send Instant Deal Alert in Telegram",
             "type": "main",
             "index": 0
           }
