@@ -1,10 +1,10 @@
 {
-  "name": "Extract and score Goofish (闲鱼) All-in-One: Search, Sellers & Reviews data to Google Sheets, CSV, and Slack with Apify",
+  "name": "Analyze Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews deals with OpenAI and alert Slack, Telegram, and Google Sheets",
   "nodes": [
     {
       "parameters": {
-        "content": "## Goofish (闲鱼) All-in-One: Search, Sellers & Reviews — Automated Sheets, CSV & Slack Pipeline\n\nBuilt for market research, e-commerce, and growth teams. This workflow runs on a schedule to extract fresh data with the **[goofish-scraper Apify Actor](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** ($0.001 / item), skips previously seen records, scores each item, logs results to **Google Sheets** and **CSV**, and posts **Slack** alerts for top matches.\n\n### How it works\n1. **Every 6 Hours** triggers the run and loads search settings from **1. Configure Search & Rules**.\n2. **2. Run UnitBytes (goofish-scraper)** executes the actor via Apify's synchronous endpoint.\n3. **3. Skip Seen Records** deduplicates items by `id` across runs.\n4. **4. Clean & Score Items** and **5. Map Export Fields** normalize fields (`id, sellerId, sellerNick, sellerCredit, city`) and compute a 0–100 `priorityScore`.\n5. **6a. Log to Google Sheets** and **6b. Export Backup CSV** store all rows, while **6c. Filter High-Priority Items** sends top matches to **7. Send Slack Alert**.\n\n### Setup\n1. Copy your API token from [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) into the **HTTP Header Auth** credential (`Authorization: Bearer <TOKEN>`) on node 2.\n2. Edit `actorInput`, `sheetTab`, and `maxTargetPrice` in **1. Configure Search & Rules**.\n3. Connect **Google Sheets** and **Slack** credentials (or test immediately via CSV export).\n\n### Customization\n- Tune `maxTargetPrice` or `priorityKeyword` in node 1 to adjust Slack alert sensitivity.\n- Full schema reference: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
-        "height": 760,
+        "content": "## Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews — AI Co-Pilot & Multi-App Pipeline\n\nExtracts fresh data on a schedule with the **[goofish-scraper Apify Actor](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io)** ($0.001 / item), skips seen records, logs all rows to **Google Sheets** and **CSV**, and enriches top matches with **OpenAI (`gpt-4o-mini`)** for **Slack** and **Telegram**.\n\n### How it works\n1. **Every 6 Hours** loads rules from **1. Configure Search & Rules**.\n2. **2. Run UnitBytes (goofish-scraper)** fetches data and **3. Skip Seen Records** deduplicates by `id`.\n3. **4. Clean & Score Items** and **5. Map Export Fields** normalize `id, sellerId, sellerNick, sellerCredit` and compute `priorityScore`.\n4. **6a. Log to Google Sheets** and **6b. Export Backup CSV** save all rows, while **6c. Filter High-Priority Items** routes top matches to **7. AI Sourcing & Arbitrage Analyst**.\n5. **8. Merge AI Arbitrage Brief** merges AI fields and triggers **9a. Send Slack Deal & Arbitrage Alert** and **9b. Send Telegram Instant Deal Alert**.\n\n### Setup\n1. Add your token from [goofish-scraper on Apify Store](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=n8n_io) to the **HTTP Header Auth** credential on node 2.\n2. Edit `actorInput`, `sheetTab`, and `maxTargetPrice` in node 1.\n3. Connect **OpenAI**, **Google Sheets**, **Slack**, and **Telegram** credentials.\n\n### Customization\n- Adjust `maxTargetPrice` in node 1 or the prompt in node 7.\n- Docs: [https://unitbytes.com/actors/goofish-xianyu-seller-scraper/](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/)",
+        "height": 780,
         "width": 560,
         "color": 1
       },
@@ -67,13 +67,13 @@
     },
     {
       "parameters": {
-        "content": "## 4. Sync to Sheets, CSV & Slack\nLogs all new records to Google Sheets and CSV, and routes high-priority matches to Slack.",
-        "height": 660,
-        "width": 540,
+        "content": "## 4. Sheets, CSV & AI Co-Pilot\nLogs all rows to Sheets and CSV, enriches high-priority items with OpenAI, and alerts teams.",
+        "height": 740,
+        "width": 980,
         "color": 7
       },
       "id": "f203d08f-85be-500a-850c-aa424fe105e0",
-      "name": "Section 4 — Sheets, CSV & Slack",
+      "name": "Section 4 — Sheets, CSV & AI Co-Pilot",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -494,6 +494,131 @@
     },
     {
       "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a cross-border e-commerce sourcing and recommerce arbitrage analyst. Analyze the scraped marketplace listing (translate non-English/Chinese titles to English) and return a JSON object with exactly 4 keys: \"aiHeadline\" (clean English product title and key specs), \"aiVerdict\" (one of: STRONG_ARBITRAGE_BUY, VERIFIED_SUPPLIER_DEAL, REVIEW_CONDITION, PASS), \"aiAnalysis\" (1-sentence evaluation of price vs target threshold, seller trust signals, and estimated resale margin), and \"aiDraftBody\" (a ready-to-send supplier/seller inquiry or negotiation message).",
+              "role": "system"
+            },
+            {
+              "content": "=Marketplace Listing ({{ $json.recordId }}):\nListing Title: {{ $json.titleText }}\nParsed Price / Metric: {{ $json.numericValue }} (Priority Score: {{ $json.priorityScore }}/100)\nListing URL: {{ $json.itemUrl }}\nRaw Payload Summary: {{ JSON.stringify($json).slice(0, 1200) }}",
+              "role": "user"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "38607d58-01f6-572b-ab8d-7565c1d5beff",
+          "name": "OpenAI account"
+        }
+      },
+      "id": "920b89ae-9973-52f2-ae16-796a592be20b",
+      "name": "7. AI Sourcing & Arbitrage Analyst",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1660,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f7a0cf07-54ce-50c9-9763-5ae92a0ac136",
+              "name": "recordId",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.recordId }}",
+              "type": "string"
+            },
+            {
+              "id": "64978942-ab97-5db7-ba98-bdd163e6c950",
+              "name": "titleText",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.titleText }}",
+              "type": "string"
+            },
+            {
+              "id": "f0d9ecab-5756-53a7-9eb4-033656e7a5ad",
+              "name": "itemUrl",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.itemUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "d791833b-fcd7-53a8-98b4-e1b1e50e5472",
+              "name": "numericValue",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.numericValue }}",
+              "type": "number"
+            },
+            {
+              "id": "190f94ea-a569-55a6-8a00-0327d12f5196",
+              "name": "priorityScore",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.priorityScore }}",
+              "type": "number"
+            },
+            {
+              "id": "42c475a6-f3e3-5c81-abe3-16fb3f4bc311",
+              "name": "recipientEmail",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.primary_email || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "ce0fe42c-b570-5ee3-af3a-9e482d8de705",
+              "name": "aiHeadline",
+              "value": "={{ $json.message?.content?.aiHeadline || $json.aiHeadline || $('6c. Filter High-Priority Items').item.json.titleText }}",
+              "type": "string"
+            },
+            {
+              "id": "40063cc0-2ba2-5096-a8af-d3ce4ef300f6",
+              "name": "aiVerdict",
+              "value": "={{ $json.message?.content?.aiVerdict || $json.aiVerdict || 'HIGH_PRIORITY' }}",
+              "type": "string"
+            },
+            {
+              "id": "a628ef2a-0d65-519d-9e59-d8a97a95af69",
+              "name": "aiAnalysis",
+              "value": "={{ $json.message?.content?.aiAnalysis || $json.aiAnalysis || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "a69aa772-b98d-58f8-ae48-c1fa29241034",
+              "name": "aiDraftBody",
+              "value": "={{ $json.message?.content?.aiDraftBody || $json.aiDraftBody || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "7c137e43-d0e9-5449-ba4a-65419ac0fb4c",
+              "name": "scrapedAt",
+              "value": "={{ $('6c. Filter High-Priority Items').item.json.scrapedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9ba9896d-f198-53be-98de-03cdbc209784",
+      "name": "8. Merge AI Arbitrage Brief",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1890,
+        360
+      ]
+    },
+    {
+      "parameters": {
         "resource": "message",
         "operation": "post",
         "select": "channel",
@@ -503,7 +628,7 @@
           "value": ""
         },
         "messageType": "text",
-        "text": "=:bell: *New High-Priority Match (Goofish (闲鱼) All-in-One: Search, Sellers & Reviews)*\n*<{{ $json.itemUrl }}|{{ $json.titleText }}>*\n• *Priority Score:* {{ $json.priorityScore }}/100 ({{ $json.numericValue }})\n• *Record ID:* `{{ $json.recordId }}`\n• *Scraped At:* {{ $json.scrapedAt }}",
+        "text": "=:robot_face: *AI Co-Pilot Match (Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews)*\n*<{{ $json.itemUrl }}|{{ $json.aiHeadline }}>*\n• *AI Verdict:* `{{ $json.aiVerdict }}` | *Priority Score:* {{ $json.priorityScore }}/100 (Metric: {{ $json.numericValue }})\n• *AI Analysis:* {{ $json.aiAnalysis }}\n• *Suggested Action / Draft:* {{ $json.aiDraftBody }}\n• *Record ID:* `{{ $json.recordId }}`",
         "otherOptions": {
           "includeLinkToWorkflow": false,
           "unfurl_links": false
@@ -516,12 +641,37 @@
         }
       },
       "id": "e3febc67-4cb1-519a-82a0-f6c0e9ecf57d",
-      "name": "7. Send Slack Alert",
+      "name": "9a. Send Slack Deal & Arbitrage Alert",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1680,
-        360
+        2120,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $('1. Configure Search & Rules').first().json.telegramChatId || '@your_channel' }}",
+        "text": "=🔥 *AI Arbitrage Brief (Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews)*\n*{{ $json.aiHeadline }}*\n• *AI Verdict:* `{{ $json.aiVerdict }}` (Score: {{ $json.priorityScore }}/100)\n• *Analysis:* {{ $json.aiAnalysis }}\n• *Suggested Message:* {{ $json.aiDraftBody }}\n• *Listing URL:* {{ $json.itemUrl }}",
+        "additionalFields": {
+          "disable_web_page_preview": true
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "64b81eb0-08bd-5f07-b094-4629f008dc84",
+          "name": "Telegram account"
+        }
+      },
+      "id": "bcdf7fbd-24de-50b7-aed7-aa0772bd1abf",
+      "name": "9b. Send Telegram Instant Deal Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2120,
+        480
       ]
     }
   ],
@@ -606,7 +756,34 @@
       "main": [
         [
           {
-            "node": "7. Send Slack Alert",
+            "node": "7. AI Sourcing & Arbitrage Analyst",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7. AI Sourcing & Arbitrage Analyst": {
+      "main": [
+        [
+          {
+            "node": "8. Merge AI Arbitrage Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8. Merge AI Arbitrage Brief": {
+      "main": [
+        [
+          {
+            "node": "9a. Send Slack Deal & Arbitrage Alert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "9b. Send Telegram Instant Deal Alert",
             "type": "main",
             "index": 0
           }
@@ -624,13 +801,16 @@
   },
   "tags": [
     {
+      "name": "AI"
+    },
+    {
+      "name": "OpenAI"
+    },
+    {
       "name": "Web Scraping"
     },
     {
       "name": "Apify"
-    },
-    {
-      "name": "UnitBytes"
     },
     {
       "name": "C2C Marketplaces"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Goofish (闲鱼) All-in-One: Search, Sellers & Reviews — Official Python SDK Quickstart
+Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews — Official Python SDK Quickstart
 Actor: https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_py
 Docs & Schema: https://unitbytes.com/actors/goofish-xianyu-seller-scraper/
 n8n Template: https://unitbytes.com/n8n/workflows/goofish-xianyu-seller-scraper-n8n-workflow.json

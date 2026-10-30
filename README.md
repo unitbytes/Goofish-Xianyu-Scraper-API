@@ -10,7 +10,7 @@
 
 **The fastest cookieless Goofish / Xianyu (闲鱼) China secondhand marketplace scraper and sub-second Multi-Tenant Standby REST API suite on Apify (`$1.00–$2.00 / 1,000 items`). Extract live secondhand deals, seller storefronts, Zhima Credit (芝麻信用) trust badges, seller inventory catalogs, and verified buyer reviews.**
 
-[**🚀 Try Live on Apify**](https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api) • [**📓 Open in Google Colab**](https://colab.research.google.com/github/unitbytes/Goofish-Xianyu-Scraper-API/blob/main/notebooks/quickstart.ipynb) • [**⚡ Official n8n Creator Hub**](https://n8n.io/creators/unitbytes/) • [**🔧 39 Free n8n Templates**](https://unitbytes.com/n8n/) • [**📖 Documentation & Schemas**](https://unitbytes.com/actors/) • [**📚 Engineering Playbooks**](https://unitbytes.com/blog/)
+[**🚀 Try Live on Apify**](https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api) • [**📓 Open in Google Colab**](https://colab.research.google.com/github/unitbytes/Goofish-Xianyu-Scraper-API/blob/main/notebooks/quickstart.ipynb) • [**⚡ Official n8n Creator Hub**](https://n8n.io/creators/unitbytes/) • [**🔧 41 Free n8n Templates**](https://unitbytes.com/n8n/) • [**📖 Documentation & Schemas**](https://unitbytes.com/actors/) • [**📚 Engineering Playbooks**](https://unitbytes.com/blog/)
 
 </div>
 
@@ -40,12 +40,12 @@ This repository contains ready-to-run **Python SDK scripts**, an **interactive 1
 | Extraction Engine | 🐍 Python SDK Quickstart | ⚡ n8n Workflow Template | 📊 Sample Output | 🚀 Cloud Console |
 | :--- | :--- | :--- | :---: | :---: |
 | **Goofish (Xianyu / 闲鱼) Scraper: Fast Search & Deals**<br><sub>[`unitbytes/goofish-xianyu-search-scraper`](https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api) • [Full Schema](https://unitbytes.com/actors/goofish-xianyu-search-scraper/) • [Engineering Playbook](https://unitbytes.com/blog/how-to-scrape-goofish-xianyu-secondhand-arbitrage-guide/)</sub> | [`examples/run_goofish_xianyu_search_scraper.py`](examples/run_goofish_xianyu_search_scraper.py) | [`n8n/goofish-xianyu-search-scraper-n8n-workflow.json`](n8n/goofish-xianyu-search-scraper-n8n-workflow.json) | [`JSON`](samples/goofish-xianyu-search-scraper-sample.json) · [`CSV`](samples/goofish-xianyu-search-scraper-sample.csv) | [⚡ **Run on Apify**](https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api) |
-| **Goofish (闲鱼) All-in-One: Search, Sellers & Reviews**<br><sub>[`unitbytes/goofish-scraper`](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api) • [Full Schema](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/) • [Engineering Playbook](https://unitbytes.com/blog/how-to-scrape-goofish-xianyu-secondhand-arbitrage-guide/)</sub> | [`examples/run_goofish_xianyu_seller_scraper.py`](examples/run_goofish_xianyu_seller_scraper.py) | [`n8n/goofish-xianyu-seller-scraper-n8n-workflow.json`](n8n/goofish-xianyu-seller-scraper-n8n-workflow.json) | [`JSON`](samples/goofish-xianyu-seller-scraper-sample.json) · [`CSV`](samples/goofish-xianyu-seller-scraper-sample.csv) | [⚡ **Run on Apify**](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api) |
+| **Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews**<br><sub>[`unitbytes/goofish-scraper`](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api) • [Full Schema](https://unitbytes.com/actors/goofish-xianyu-seller-scraper/) • [Engineering Playbook](https://unitbytes.com/blog/how-to-scrape-goofish-xianyu-secondhand-arbitrage-guide/)</sub> | [`examples/run_goofish_xianyu_seller_scraper.py`](examples/run_goofish_xianyu_seller_scraper.py) | [`n8n/goofish-xianyu-seller-scraper-n8n-workflow.json`](n8n/goofish-xianyu-seller-scraper-n8n-workflow.json) | [`JSON`](samples/goofish-xianyu-seller-scraper-sample.json) · [`CSV`](samples/goofish-xianyu-seller-scraper-sample.csv) | [⚡ **Run on Apify**](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api) |
 | **Goofish (闲鱼) Synchronous Standby REST APIs (`<500ms` GET)**<br><sub>[`unitbytes--goofish-scraper.apify.actor`](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api) • [`unitbytes--goofish-xianyu-search-scraper.apify.actor`](https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api)</sub> | [`examples/run_goofish_standby_api.py`](examples/run_goofish_standby_api.py) | [`n8n/goofish-xianyu-seller-scraper-n8n-workflow.json`](n8n/goofish-xianyu-seller-scraper-n8n-workflow.json) | [`JSON`](samples/goofish-xianyu-seller-scraper-sample.json) · [`CSV`](samples/goofish-xianyu-seller-scraper-sample.csv) | [⚡ **Standby Docs**](https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api) |
 
 - 📓 **1-Click Interactive Google Colab Notebook:** Open [`notebooks/quickstart.ipynb`](notebooks/quickstart.ipynb) directly in your browser via [**Google Colab ↗**](https://colab.research.google.com/github/unitbytes/Goofish-Xianyu-Scraper-API/blob/main/notebooks/quickstart.ipynb) to inspect sample DataFrames and test live API queries with zero local setup.
 - 🤖 **Cursor, Windsurf & Claude Code MCP Ready:** Includes [`.cursor/mcp.json`](.cursor/mcp.json) pre-configured with `https://mcp.apify.com` so AI coding agents can invoke these UnitBytes scrapers natively.
-- 💡 **Using n8n?** Explore our official creator profile at **[n8n.io/creators/unitbytes](https://n8n.io/creators/unitbytes/)** or copy all 39 pre-built 9-node scraping workflows (`Ctrl+V`) at **[unitbytes.com/n8n](https://unitbytes.com/n8n/)**.
+- 💡 **Using n8n?** Explore our official creator profile at **[n8n.io/creators/unitbytes](https://n8n.io/creators/unitbytes/)** or copy all 41 pre-built 9-node scraping workflows (`Ctrl+V`) at **[unitbytes.com/n8n](https://unitbytes.com/n8n/)**.
 - 📚 **Engineering Playbook:** Read **[How to Search & Scrape Goofish (Xianyu / 闲鱼) Without a +86 Phone Login in 2026 (API Guide)](https://unitbytes.com/blog/how-to-scrape-goofish-xianyu-secondhand-arbitrage-guide/)** or browse all scraping & automation guides at **[unitbytes.com/blog](https://unitbytes.com/blog/)**.
 <!-- UNITBYTES_REPO_KIT_END -->
 
@@ -86,7 +86,7 @@ Launch pre-configured extraction templates directly in the Apify Cloud Console w
 
 The fastest and most affordable Goofish 闲鱼 (Xianyu / Idlefish) scraper. Dual modes: ultra-fast summary and 150+ field full details with zero compute fees. MCP & AI Agent ready.
 
-- **Pricing:** `$0.002 / item` (Pay-Per-Event — `$0.002` search item (summary), `$0.0049` enriched detail item (volume tiers from `$0.0016`))
+- **Pricing:** `$0.002 / item` (Pay-Per-Event — `$0.002` search item (summary), `$0.003` enriched detail item (volume tiers from `$0.0016`))
 - **Cloud Console:** [https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api](https://apify.com/unitbytes/goofish-xianyu-search-scraper?fpr=939u3w&fp_sid=gh_goofish_api)
 - **Full Documentation & Schema:** [https://unitbytes.com/actors/goofish-xianyu-search-scraper/](https://unitbytes.com/actors/goofish-xianyu-search-scraper/)
 - **n8n Workflow File:** [`n8n/goofish-xianyu-search-scraper-n8n-workflow.json`](n8n/goofish-xianyu-search-scraper-n8n-workflow.json)
@@ -223,11 +223,11 @@ Zhima Credit (芝麻信用) is Alibaba's official credit rating system. Sellers 
 
 ---
 
-### 🚀 Goofish (闲鱼) All-in-One: Search, Sellers & Reviews (`unitbytes/goofish-scraper`)
+### 🚀 Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews (`unitbytes/goofish-scraper`)
 
 <p align="center">
   <a href="https://apify.com/unitbytes/goofish-scraper?fpr=939u3w&fp_sid=gh_goofish_api" target="_blank">
-    <img src="https://raw.githubusercontent.com/unitbytes/.github/main/assets/banners/unitbytes-goofish-xianyu-seller-inventory-reviews-scraper-banner.jpg" alt="Goofish (闲鱼) All-in-One: Search, Sellers & Reviews" width="100%" />
+    <img src="https://raw.githubusercontent.com/unitbytes/.github/main/assets/banners/unitbytes-goofish-xianyu-seller-inventory-reviews-scraper-banner.jpg" alt="Goofish (Xianyu / 闲鱼) Scraper: Sellers & Reviews" width="100%" />
   </a>
 </p>
 
@@ -374,6 +374,6 @@ Don't want to manage API tokens or scripts? **UnitBytes Data Delivery** provides
 
 - 🌐 **Request a Sample Dataset:** [https://unitbytes.com/#enterprise-intake](https://unitbytes.com/#enterprise-intake)
 - 📧 **Direct Engineering Contact:** [contact@unitbytes.com](mailto:contact@unitbytes.com)
-- ⚡ **Explore All 39 Scrapers:** [https://unitbytes.com/actors/](https://unitbytes.com/actors/)
+- ⚡ **Explore All 41 Scrapers:** [https://unitbytes.com/actors/](https://unitbytes.com/actors/)
 - 📚 **Engineering Playbooks & Guides:** [https://unitbytes.com/blog/](https://unitbytes.com/blog/)
 - 🔗 **Official n8n Creator Profile:** [https://n8n.io/creators/unitbytes/](https://n8n.io/creators/unitbytes/)
